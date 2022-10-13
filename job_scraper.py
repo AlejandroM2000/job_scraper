@@ -16,6 +16,7 @@ import os
 import xlsxwriter
 import pandas as pd
 from openpyxl import load_workbook
+import maskpass 
 
 
 class LinkedInBot:
@@ -36,6 +37,12 @@ class LinkedInBot:
         }
 
     def login(self, email, pw):
+        """This function takes the users email and password to log into LinkedIn
+
+        Args:
+            email (_string_): the users email
+            pw (string): the users password
+        """
         logging.info("Logging in")
         self.driver.maximize_window()
         self.driver.get('https://www.linkedin.com/login')
@@ -156,11 +163,13 @@ class LinkedInBot:
 
 
 if __name__ == "__main__":
-    email = "alejandromjr2000@gmail.com"
-    pw = "s4nD!ego"
-    file = "../jobs.xlsx"
+    email = input("Enter your email: ")
+    pw = maskpass.askpass(prompt="Enter your password: ", mask="*")
+    file = input("Enter the file name you are creating: ")
+    job_keywords = input("Enter the job industry you are looking for: ")
+    country = input("Enter the country: ")
     bot = LinkedInBot()
-    bot.run(email, pw, "information technology", "United States")
-    if not os.path.exists(file):
-        bot.create_workbook(file)
+    bot.run(email, pw, job_keywords, country)
+    if not os.path.exists("../"+file):
+        bot.create_workbook("../"+file)
     bot.excel_export()
