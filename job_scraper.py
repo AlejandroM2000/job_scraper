@@ -40,8 +40,8 @@ class LinkedInBot:
         """This function takes the users email and password to log into LinkedIn
 
         Args:
-            email (_string_): the users email
-            pw (string): the users password
+            email (str): the users email
+            pw (str): the users password
         """
         logging.info("Logging in")
         self.driver.maximize_window()
@@ -53,17 +53,22 @@ class LinkedInBot:
         time.sleep(self.delay)
 
     def wait(self, t_delay=None):
-        """Just easier to build this in here.
-        Parameters
-        ----------
-        t_delay [optional] : int
-            seconds to wait.
+        """Just a blocking function that has the program wait t_delay time
+
+        Args:
+            t_delay (int, optional): delay for the function. Defaults to None.
         """
+
         delay = self.delay if t_delay == None else t_delay
         time.sleep(delay)
 
     def search_linkedin(self, keywords, location):
-        """Enter keywords into search bar"""
+        """Searches LinkedIn using the keywords and location
+
+        Args:
+            keywords (str): the keywords for the position one is looking for
+            location (str): the location that one wants the job in
+        """
         logging.info("Searching jobs page")
         self.driver.get("https://www.linkedin.com/jobs/")
         # search based on keywords and location and hit enter
@@ -78,20 +83,23 @@ class LinkedInBot:
         time.sleep(self.delay) 
         
     def scroll_to(self, job_list_item):
-        """Just a function that will scroll to the list item in the column 
+        """function scrolls to the job item on the page
+
+        Args:
+            job_list_item (Selenium webelement): one of the jobs that is currently listed on the page
         """
         self.driver.execute_script("arguments[0].scrollIntoView();", job_list_item)
         job_list_item.click()
         time.sleep(self.delay)   
 
     def get_position_data(self, job):
-        """Gets the position data for a posting.
-        Parameters
-        ----------
-        job : Selenium webelement
-        Returns
-        -------
-        list of strings : [position, company, location, details]
+        """Gets the most important information about the job listing
+
+        Args:
+            job (Selenium webelement): the job the driver is currently on
+
+        Returns:
+            list: has the all job info
         """
         try:
             [position, company, location] = job.text.split('\n')[:3]
