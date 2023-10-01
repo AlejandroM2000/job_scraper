@@ -1,0 +1,4 @@
+./build/*
+./dist/*
+./job_scraper/*
+job_scraper.spec
